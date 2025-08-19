@@ -1,4 +1,5 @@
 struct stat;
+struct sockaddr;
 
 // system calls
 int fork(void);
@@ -22,6 +23,15 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int socket(int, int, int);
+int bind(int, struct sockaddr*, int);
+int recvfrom(int, char*, int, struct sockaddr*, int*);
+int sendto(int, char*, int, struct sockaddr*, int);
+int connect(int, struct sockaddr*, int);
+int listen(int, int);
+int accept(int, struct sockaddr*, int*);
+int recv(int, char*, int);
+int send(int, char*, int);
 
 // ulib.c
 int stat(const char*, struct stat*);

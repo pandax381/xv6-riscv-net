@@ -34,6 +34,7 @@ OBJS = \
   $K/rtc.o \
   $K/time.o \
   $K/virtio_disk.o \
+  $K/syssocket.o \
   $N/util.o \
   $N/net.o \
   $N/ether.o \
@@ -42,6 +43,7 @@ OBJS = \
   $N/icmp.o \
   $N/udp.o \
   $N/tcp.o \
+  $N/socket.o \
   $P/virtio_net.o \
   $P/std.o \
 

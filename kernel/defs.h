@@ -10,6 +10,8 @@ struct stat;
 struct superblock;
 struct timeval;
 struct tm;
+struct socket;
+struct sockaddr;
 
 // bio.c
 void            binit(void);
@@ -153,6 +155,10 @@ int             fetchstr(uint64, char*, int);
 int             fetchaddr(uint64, uint64*);
 void            syscall();
 
+// sysfile.c
+int             argfd(int, int*, struct file**);
+int             fdalloc(struct file*);
+
 // time.c
 time_t          time(time_t*);
 int             gettimeofday(struct timeval*, void*);
@@ -210,6 +216,18 @@ void            netinit(void);
 void            netrun(void);
 int             net_softirq_handler(void);
 int             net_event_handler(void);
+
+// net/socket.c
+struct file *   socket_alloc(int, int, int);
+int             socket_close(struct socket*);
+int             socket_bind(struct socket*, struct sockaddr*, int);
+int             socket_recvfrom(struct socket*, char*, int, struct sockaddr*, int*);
+int             socket_sendto(struct socket*, char*, int, struct sockaddr*, int);
+int             socket_connect(struct socket*, struct sockaddr*, int);
+int             socket_listen(struct socket*, int);
+struct file *   socket_accept(struct socket*, struct sockaddr*, int*);
+int             socket_read(struct socket*, char*, int);
+int             socket_write(struct socket*, char*, int);
 
 // net/platform/xv6-riscv/virtio_net.c
 void            virtio_net_init(void);
