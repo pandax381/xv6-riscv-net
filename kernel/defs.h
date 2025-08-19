@@ -207,5 +207,9 @@ void            virtio_disk_intr(void);
 void            netinit(void);
 void            netrun(void);
 
+// net/platform/xv6-riscv/virtio_net.c
+void            virtio_net_init(void);
+void            virtio_net_intr(void);
+
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

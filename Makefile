@@ -37,6 +37,7 @@ OBJS = \
   $N/util.o \
   $N/net.o \
   $N/ether.o \
+  $P/virtio_net.o \
   $P/std.o \
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
@@ -175,12 +176,26 @@ ifndef CPUS
 CPUS := 3
 endif
 
+TAPDEV=tap0
+TAPADDR=192.0.2.1/24
+
 QEMUOPTS = -machine virt -bios none -kernel $K/kernel -m 128M -smp $(CPUS) -nographic
 QEMUOPTS += -global virtio-mmio.force-legacy=false
 QEMUOPTS += -drive file=fs.img,if=none,format=raw,id=x0
 QEMUOPTS += -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
+QEMUOPTS += -netdev tap,ifname=$(TAPDEV),id=en0
+QEMUOPTS += -device virtio-net-device,netdev=en0,csum=off,gso=off,guest_csum=off,bus=virtio-mmio-bus.1
 
-qemu: $K/kernel fs.img
+tap:
+	@ip addr show $(TAPDEV) 2>/dev/null || (echo "Create '$(TAPDEV)'"; \
+		sudo ip tuntap add mode tap user $(USER) name $(TAPDEV); \
+		sudo sysctl -w net.ipv6.conf.$(TAPDEV).disable_ipv6=1; \
+		sudo ip addr add $(TAPADDR) dev $(TAPDEV); \
+		sudo ip link set $(TAPDEV) up; \
+		ip addr show $(TAPDEV); \
+	)
+
+qemu: $K/kernel fs.img tap
 	$(QEMU) $(QEMUOPTS)
 
 .gdbinit: .gdbinit.tmpl-riscv
