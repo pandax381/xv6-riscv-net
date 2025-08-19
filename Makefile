@@ -36,6 +36,7 @@ OBJS = \
   $K/virtio_disk.o \
   $N/util.o \
   $N/net.o \
+  $N/ether.o \
   $P/std.o \
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
