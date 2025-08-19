@@ -46,7 +46,32 @@ memory_free(void *ptr)
  * Interrupt
  */
 
+#define INTR_IRQ_SOFTIRQ 0
+#define INTR_IRQ_EVENT 0
 
+static inline int
+intr_raise_irq(unsigned int irq)
+{
+    return 0;
+}
+
+static inline int
+intr_init(void)
+{
+    return 0;
+}
+
+static inline int
+intr_run(void)
+{
+    return 0;
+}
+
+static inline void
+intr_shutdown(void)
+{
+    return;
+}
 
 /*
  * Scheduler

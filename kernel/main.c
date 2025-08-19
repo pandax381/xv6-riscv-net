@@ -41,6 +41,8 @@ main()
     fileinit();      // file table
     virtio_disk_init(); // emulated hard disk
     printdate();
+    netinit();       // network stack
+    netrun();        // start networking
     userinit();      // first user process
     __sync_synchronize();
     started = 1;
