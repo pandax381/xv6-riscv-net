@@ -154,6 +154,8 @@ UPROGS=\
 	$U/_rm\
 	$U/_sh\
 	$U/_stressfs\
+	$U/_tcpecho\
+	$U/_udpecho\
 	$U/_usertests\
 	$U/_grind\
 	$U/_wc\

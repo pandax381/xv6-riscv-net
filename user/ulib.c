@@ -145,3 +145,68 @@ memcpy(void *dst, const void *src, uint n)
 {
   return memmove(dst, src, n);
 }
+
+#ifndef __BIG_ENDIAN
+#define __BIG_ENDIAN 4321
+#endif
+#ifndef __LITTLE_ENDIAN
+#define __LITTLE_ENDIAN 1234
+#endif
+
+static int endian;
+
+static int
+byteorder(void)
+{
+    uint32_t x = 0x00000001;
+
+    return *(uint8_t *)&x ? __LITTLE_ENDIAN : __BIG_ENDIAN;
+}
+
+static uint16_t
+byteswap16(uint16_t v)
+{
+    return (v & 0x00ff) << 8 | (v & 0xff00 ) >> 8;
+}
+
+static uint32_t
+byteswap32(uint32_t v)
+{
+    return (v & 0x000000ff) << 24 | (v & 0x0000ff00) << 8 | (v & 0x00ff0000) >> 8 | (v & 0xff000000) >> 24;
+}
+
+uint16_t
+htons(uint16_t h)
+{
+    if (!endian) {
+        endian = byteorder();
+    }
+    return endian == __LITTLE_ENDIAN ? byteswap16(h) : h;
+}
+
+uint16_t
+ntohs(uint16_t n)
+{
+    if (!endian) {
+        endian = byteorder();
+    }
+    return endian == __LITTLE_ENDIAN ? byteswap16(n) : n;
+}
+
+uint32_t
+htonl(uint32_t h)
+{
+    if (!endian) {
+        endian = byteorder();
+    }
+    return endian == __LITTLE_ENDIAN ? byteswap32(h) : h;
+}
+
+uint32_t
+ntohl(uint32_t n)
+{
+    if (!endian) {
+        endian = byteorder();
+    }
+    return endian == __LITTLE_ENDIAN ? byteswap32(n) : n;
+}
