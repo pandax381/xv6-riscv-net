@@ -106,6 +106,64 @@ intr_shutdown(void)
  * Scheduler
  */
 
+struct sched_ctx {
+    int interrupted;
+    int wc; /* wait count */
+};
 
+#define SCHED_CTX_INITIALIZER {0, 0}
+
+static inline int
+sched_ctx_init(struct sched_ctx *ctx)
+{
+    ctx->interrupted = 0;
+    ctx->wc = 0;
+    return 0;
+}
+
+static inline int
+sched_ctx_destroy(struct sched_ctx *ctx)
+{
+    if (ctx->wc) {
+        return -1;
+    }
+    return 0;
+}
+
+static inline int
+sched_sleep(struct sched_ctx *ctx, mutex_t *mutex, const struct timespec *abstime)
+{
+    (void)abstime;
+    if (ctx->interrupted) {
+        errno = EINTR;
+        return -1;
+    }
+    ctx->wc++;
+    sleep(ctx, mutex);
+    ctx->wc--;
+    if (ctx->interrupted) {
+        if (!ctx->wc) {
+            ctx->interrupted = 0;
+        }
+        errno = EINTR;
+        return -1;
+    }
+    return 0;
+}
+
+static inline int
+sched_wakeup(struct sched_ctx *ctx)
+{
+    wakeup(ctx);
+    return 0;
+}
+
+static inline int
+sched_interrupt(struct sched_ctx *ctx)
+{
+    ctx->interrupted = 1;
+    wakeup(ctx);
+    return 0;
+}
 
 #endif

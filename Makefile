@@ -40,6 +40,7 @@ OBJS = \
   $N/ip.o \
   $N/arp.o \
   $N/icmp.o \
+  $N/udp.o \
   $P/virtio_net.o \
   $P/std.o \
 
