@@ -6,6 +6,7 @@ OBJS = \
   $K/start.o \
   $K/console.o \
   $K/printf.o \
+  $K/printfmt.o \
   $K/uart.o \
   $K/kalloc.o \
   $K/spinlock.o \
@@ -66,7 +67,7 @@ CFLAGS += -fno-common -nostdlib
 CFLAGS += -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset
 CFLAGS += -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero
 CFLAGS += -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc
-CFLAGS += -fno-builtin-free
+CFLAGS += -fno-builtin-free -fno-builtin-strnlen -fno-builtin-snprintf -fno-builtin-vsnprintf
 CFLAGS += -fno-builtin-memcpy -Wno-main
 CFLAGS += -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf
 CFLAGS += -I.
