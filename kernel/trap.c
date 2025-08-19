@@ -173,6 +173,7 @@ clockintr()
     ticks++;
     wakeup(&ticks);
     release(&tickslock);
+    net_timer_handler();
   }
 
   // ask for the next timer interrupt. this also clears
