@@ -161,9 +161,11 @@ struct tm*      localtime_r(const time_t*, struct tm*);
 
 // trap.c
 extern uint     ticks;
+extern uint64   pending;
 void            trapinit(void);
 void            trapinithart(void);
 extern struct spinlock tickslock;
+extern struct spinlock pendinglock;
 void            usertrapret(void);
 
 // uart.c
@@ -206,6 +208,8 @@ void            virtio_disk_intr(void);
 // net/net.c
 void            netinit(void);
 void            netrun(void);
+int             net_softirq_handler(void);
+int             net_event_handler(void);
 
 // net/platform/xv6-riscv/virtio_net.c
 void            virtio_net_init(void);

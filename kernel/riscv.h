@@ -63,6 +63,7 @@ w_sstatus(uint64 x)
 }
 
 // Supervisor Interrupt Pending
+#define SIP_SSIP (1L << 1)
 static inline uint64
 r_sip()
 {
