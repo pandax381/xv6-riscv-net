@@ -9,6 +9,8 @@ typedef unsigned long uint64;
 
 typedef uint64 pde_t;
 
+typedef long time_t;
+
 #if defined(_STDIO_H)
 #define MKFS
 #endif
