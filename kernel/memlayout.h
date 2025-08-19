@@ -4,6 +4,7 @@
 // based on qemu's hw/riscv/virt.c:
 //
 // 00001000 -- boot ROM, provided by qemu
+// 00101000 -- RTC
 // 02000000 -- CLINT
 // 0C000000 -- PLIC
 // 10000000 -- uart0 
@@ -16,6 +17,9 @@
 // 80000000 -- entry.S, then kernel text and data
 // end -- start of kernel page allocation area
 // PHYSTOP -- end RAM used by the kernel
+
+// Goldfish RTC
+#define RTC 0x00101000L
 
 // qemu puts UART registers here in physical memory.
 #define UART0 0x10000000L
