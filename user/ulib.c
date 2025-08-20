@@ -1,6 +1,7 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "kernel/fcntl.h"
+#include "kernel/net/socket.h"
 #include "user/user.h"
 
 //
@@ -209,4 +210,78 @@ ntohl(uint32_t n)
         endian = byteorder();
     }
     return endian == __LITTLE_ENDIAN ? byteswap32(n) : n;
+}
+
+long
+strtol(const char *s, char **endptr, int base)
+{
+    int neg = 0;
+    long val = 0;
+
+    // gobble initial whitespace
+    while (*s == ' ' || *s == '\t')
+        s++;
+
+    // plus/minus sign
+    if (*s == '+')
+        s++;
+    else if (*s == '-')
+        s++, neg = 1;
+
+    // hex or octal base prefix
+    if ((base == 0 || base == 16) && (s[0] == '0' && s[1] == 'x'))
+        s += 2, base = 16;
+    else if (base == 0 && s[0] == '0')
+        s++, base = 8;
+    else if (base == 0)
+        base = 10;
+
+    // digits
+    while (1) {
+        int dig;
+
+        if (*s >= '0' && *s <= '9')
+            dig = *s - '0';
+        else if (*s >= 'a' && *s <= 'z')
+            dig = *s - 'a' + 10;
+        else if (*s >= 'A' && *s <= 'Z')
+            dig = *s - 'A' + 10;
+        else
+            break;
+        if (dig >= base)
+            break;
+        s++, val = (val * base) + dig;
+        // we don't properly detect overflow!
+    }
+
+    if (endptr)
+        *endptr = (char *) s;
+    return (neg ? -val : val);
+}
+
+int
+inet_pton (int family, const char *p, void *n) {
+    char *sp, *ep;
+    int idx;
+    long ret;
+
+    if (family != AF_INET) {
+        return -1;
+    }
+    sp = (char *)p;
+    for (idx = 0; idx < 4; idx++) {
+        ret = strtol(sp, &ep, 10);
+        if (ret < 0 || ret > 255) {
+            return -1;
+        }
+        if (ep == sp) {
+            return -1;
+        }
+        if ((idx == 3 && *ep != '\0') || (idx != 3 && *ep != '.')) {
+            return -1;
+        }
+        ((uint8_t *)n)[idx] = ret;
+        sp = ep + 1;
+    }
+    return 0;
 }
