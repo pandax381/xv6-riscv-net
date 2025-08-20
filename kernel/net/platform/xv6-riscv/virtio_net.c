@@ -424,16 +424,4 @@ virtio_net_init(void)
     nic->dev = dev;
 
     debugf("initialized, addr=%s", ether_addr_ntop(dev->addr, mac, sizeof(mac)));
-
-    // TODO: Temporary Code
-    struct ip_iface *iface;
-    iface = ip_iface_alloc("192.0.2.2", "255.255.255.0");
-    if (!iface) {
-        errorf("ip_iface_alloc() failure");
-        return;
-    }
-    if (ip_iface_register(dev, iface) == -1) {
-        errorf("ip_iface_register() failure");
-        return;
-    }
 }
