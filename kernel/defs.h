@@ -229,6 +229,7 @@ int             socket_listen(struct socket*, int);
 struct file *   socket_accept(struct socket*, struct sockaddr*, int*);
 int             socket_read(struct socket*, char*, int);
 int             socket_write(struct socket*, char*, int);
+int             socket_ioctl(struct socket*, int, void*);
 
 // net/platform/xv6-riscv/virtio_net.c
 void            virtio_net_init(void);

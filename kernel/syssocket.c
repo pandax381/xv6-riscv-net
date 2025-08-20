@@ -260,3 +260,35 @@ sys_send(void)
   }
   return socket_write(f->socket, buf, buflen);
 }
+
+int
+sys_ioctl(void)
+{
+  struct file *f;
+  int req;
+  uint64 ifr_p;
+  struct ifreq ifr;
+  struct proc *p = myproc();
+  int ret;
+
+  if (argfd(0, 0, &f) < 0 || f->type != FD_SOCKET){
+    return -1;
+  }
+  argint(1, &req);
+  if (req & IOC_IN) {
+    argaddr(2, &ifr_p);
+    if (!ifr_p) {
+      return -1;
+    }
+    if (copyin(p->pagetable, (char *)&ifr, ifr_p, sizeof(ifr)) < 0) {
+      return -1;
+    }
+  }
+  ret = socket_ioctl(f->socket, req, &ifr);
+  if (req & IOC_OUT) {
+    if (copyout(p->pagetable, ifr_p, (char *)&ifr, sizeof(ifr)) < 0) {
+      return -1;
+    }
+  }
+  return ret;
+}

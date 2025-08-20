@@ -71,5 +71,7 @@ extern long
 strtol(const char *s, char **endptr, int base);
 extern char *
 strrchr(const char *cp, int ch);
+extern int
+strcmp(const char *p, const char *q);
 
 #endif

@@ -12,10 +12,10 @@
 #define NET_DEVICE_TYPE_ETHERNET  0x0002
 
 #define NET_DEVICE_FLAG_UP        0x0001
-#define NET_DEVICE_FLAG_LOOPBACK  0x0010
-#define NET_DEVICE_FLAG_BROADCAST 0x0020
-#define NET_DEVICE_FLAG_P2P       0x0040
-#define NET_DEVICE_FLAG_NEED_ARP  0x0100
+#define NET_DEVICE_FLAG_BROADCAST 0x0002
+#define NET_DEVICE_FLAG_LOOPBACK  0x0008
+#define NET_DEVICE_FLAG_P2P       0x0010
+#define NET_DEVICE_FLAG_NEED_ARP  0x0080
 
 #define NET_DEVICE_ADDR_LEN 16
 
@@ -67,7 +67,15 @@ struct net_iface {
 extern struct net_device *
 net_device_alloc(void);
 extern int
+net_device_open(struct net_device *dev);
+extern int
+net_device_close(struct net_device *dev);
+extern int
 net_device_register(struct net_device *dev);
+extern struct net_device *
+net_device_by_index(unsigned int index);
+extern struct net_device *
+net_device_by_name(const char *name);
 extern int
 net_device_add_iface(struct net_device *dev, struct net_iface *iface);
 extern struct net_iface *

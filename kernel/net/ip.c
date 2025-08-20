@@ -266,6 +266,23 @@ ip_iface_register(struct net_device *dev, struct ip_iface *iface)
     return 0;
 }
 
+int
+ip_iface_reconfigure(struct ip_iface *iface, ip_addr_t unicast, ip_addr_t netmask)
+{
+    struct ip_route *route;
+
+    iface->unicast = unicast;
+    iface->netmask = netmask;
+    iface->broadcast = (iface->unicast & iface->netmask) | ~iface->netmask;
+    for (route = routes; route; route = route->next) {
+        if (route->iface == iface) {
+            route->network = iface->unicast & iface->netmask;
+            route->netmask = iface->netmask;
+        }
+    }
+    return 0;
+}
+
 struct ip_iface *
 ip_iface_select(ip_addr_t addr)
 {

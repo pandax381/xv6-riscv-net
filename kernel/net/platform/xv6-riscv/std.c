@@ -134,3 +134,11 @@ strrchr(const char *cp, int ch)
     }
     return save;
 }
+
+int
+strcmp(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
