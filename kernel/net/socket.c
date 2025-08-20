@@ -58,8 +58,10 @@ socket_close(struct socket *s)
     switch (s->type) {
     case SOCK_DGRAM:
         udp_close(s->desc);
+        break;
     case SOCK_STREAM:
         tcp_close(s->desc);
+        break;
     default:
         return -1;
     }
