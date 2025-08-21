@@ -1,11 +1,13 @@
 xv6-riscv-net
 =======
-This project is implement TCP/IP Network Stack on xv6-riscv.
 
-The network stack uses https://github.com/pandax381/microps
+This project integrates a TCP/IP protocol stack into the [xv6-riscv](https://github.com/mit-pdos/xv6-riscv) operating system, enabling network capabilities.
 
-microps is a user-mode TCP/IP stack that I'm developing.
-This project ported it to the xv6 kernel.
+Key Components:
+
+- TCP/IP Stack: A kernel-space port of [microps](https://github.com/pandax381/microps), a user-mode TCP/IP stack that I am also developing.
+
+- Network Driver: A virtio-net driver for network device emulation in QEMU.
 
 ## License
 
