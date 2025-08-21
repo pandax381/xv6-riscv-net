@@ -9,6 +9,8 @@ Key Components:
 
 - Network Driver: A virtio-net driver for network device emulation in QEMU.
 
+![screenshot](./doc/screenshot.png)
+
 ## License
 
 xv6-riscv: Under the MIT License. See [LICENSE](./LICENSE) file.
