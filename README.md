@@ -11,6 +11,8 @@ Key Components:
 
 - **Socket API**: A standard socket interface for network applications.
 
+- **Network Configuration**: A simple `ifconfig` command for basic network settings.
+
 ![screenshot](./doc/screenshot.png)
 
 ## Quick Start
